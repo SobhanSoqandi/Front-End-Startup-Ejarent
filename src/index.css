@@ -1,0 +1,17 @@
+@import url("../public/fonts/font.css");
+@import "tailwindcss";
+
+
+@layer components {
+    .btn {
+        @apply bg-blue-500 rounded-xl p-3 text-white
+    }
+
+    .input--style {
+        @apply bg-gray-100 rounded-xl focus:shadow-md focus:ring-1 focus:ring-blue-500 focus:outline-none focus:bg-white block w-full p-3
+    }
+}
+
+body{
+     font-family: "Vazir";
+}
