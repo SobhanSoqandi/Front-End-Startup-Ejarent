@@ -4,21 +4,22 @@ import Input from '../../UI/Input';
 import { getOtp } from '../../services/authService';
 import toast from 'react-hot-toast';
 import Loading from '../../UI/Loading';
-import { useForm } from 'react-hook-form';
 
-function SendOtp() {
+
+function SendOtp({setStep , handleSubmit , register}) {
 
     const { isPending: isSendingOtp, mutateAsync } = useMutation({
         mutationFn: getOtp,
     })
 
-    const { handleSubmit, register } = useForm();
+    
 
     const SendOtphandler = async (data) => {
 
         try {
             const { message } = await mutateAsync(data);
             toast.success(message);
+            setStep(2);
 
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -40,7 +41,7 @@ function SendOtp() {
             <div className="w-full lg:w-1/2 flex items-center justify-center px-4">
                 <div className="max-w-sm w-full md:shadow-md p-8 rounded-xl">
                     <div className="text-center mb-4">
-                        <a className="font-bold text-orange-500 text-2xl">اجارنت</a>
+                        <a className="font-[lalezar] font-bold text-orange-500 text-2xl">اجارنت</a>
                     </div>
                     <h2 className="text-lg uppercase font-semibold py-5">
                         ورود | ثبت‌نام

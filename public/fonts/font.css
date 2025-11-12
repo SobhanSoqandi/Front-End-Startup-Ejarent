@@ -18,3 +18,11 @@
   font-weight: 900;
   src: url("Vazirmatn-Black.woff2") format("woff2");
 }
+
+
+@font-face {
+  font-family: "lalezar";
+  font-style: normal;
+  font-weight: 900;
+  src: url("Lalezar-Regular.ttf") format("woff2");
+}
