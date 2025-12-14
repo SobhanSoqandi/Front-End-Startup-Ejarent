@@ -3,7 +3,7 @@
 function Input({ type, label, placeholder, name, register, validationSchema = {}, errors }) {
     return (
         <div>
-            <label for={label} className="block my-2 text-sm text-[#00000]">{label}</label>
+            <label htmlFor={label} className="block my-2 text-sm text-[#00000]">{label}</label>
             <input
                 {...register(name, validationSchema)}
                 id={label}

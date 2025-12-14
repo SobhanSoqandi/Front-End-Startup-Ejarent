@@ -3,7 +3,7 @@ import { ThreeDot } from "react-loading-indicators"
 
 function Loading({size}) {
     return (
-    <div className="text-center p-3" >
+    <div className="text-center py-6" >
         <ThreeDot
         size={size}
         color="blue"

@@ -5,13 +5,15 @@ import { CompleteProfile } from '../../services/authService';
 import toast from 'react-hot-toast';
 import Loading from '../../UI/Loading';
 import Input from '../../UI/Input';
+import RadioInputGroup from '../../UI/RadioInputGroup';
+import { IoCameraReverseOutline } from "react-icons/io5";
 
 function CompleteProfileForm() {
 
     const phoneNumber = localStorage.getItem("userphoneNumber");
 
 
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, watch, formState: { errors } } = useForm();
 
     const { isPending: isCompleting, mutateAsync } = useMutation({
         mutationFn: CompleteProfile,
@@ -34,18 +36,36 @@ function CompleteProfileForm() {
     }
 
     return (
-        <div className="shadow w-96 mx-auto p-3 rounded-xl" >
+        <div className="shadow-sm w-96 mx-auto mt-20 p-6 rounded-xl" >
 
 
             <form onSubmit={handleSubmit(CompleteProfileHandler)} >
 
-                {/* <Input
-                    register={register}
-                    name="phoneNumber"
-                    label="phone"
-                    type="number"
-                    placeholder="number خودرا وارد کنید"
-                /> */}
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+
+                        <img
+                            src="https://via.placeholder.com/150"
+                            alt="profile"
+                            class="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                        />
+
+                        <button
+                            type="button"
+                            className="absolute bottom-5 rounded-full"
+                        >
+                            <IoCameraReverseOutline className="w-8 h-8" />
+                        </button>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
 
                 <Input
                     register={register}
@@ -74,12 +94,35 @@ function CompleteProfileForm() {
                     }}
                     errors={errors}
                 />
+
+
+                <RadioInputGroup
+                    label="جنسیت :"
+                    errors={errors}
+                    watch={watch}
+                    register={register}
+                    configs={{
+                        name: "gender",
+                        options: [
+                            {
+                                value: "male",
+                                label: " مرد ",
+                            },
+                            { value: "female", label: " زن " },
+                        ],
+                    }}
+                />
+
                 {
                     isCompleting ? <Loading /> :
-                        <button className="btn w-full mt-3" >
+                        <button className="btn w-full mt-5" >
                             ثبت اطلاعات
                         </button>
                 }
+
+
+
+
             </form>
         </div>
     )
