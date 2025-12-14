@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import AuthContainer from "./Pages/Auth/AuthContainer"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "react-hot-toast"
+import CompleteProfile from "./Pages/Auth/CompleteProfile"
+
 
 function App() {
 
@@ -21,6 +23,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/auth" element={<AuthContainer />} />
+            <Route path="/complete-profile" element={<CompleteProfile />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

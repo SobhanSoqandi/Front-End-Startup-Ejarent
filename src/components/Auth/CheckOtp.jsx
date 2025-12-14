@@ -25,6 +25,8 @@ function CheckOtp({ phoneNumber, onBack }) {
         e.preventDefault();
         try {
             const { message } = await mutateAsync({ phoneNumber, otp });
+            localStorage.setItem("userphoneNumber" , phoneNumber);
+            // localStorage.setItem("userPhone", phoneNumber);
             toast.success(message);
 
         } catch (error) {

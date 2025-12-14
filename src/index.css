@@ -10,6 +10,10 @@
     .input--style {
         @apply bg-gray-100 rounded-xl focus:shadow-md focus:ring-1 focus:ring-blue-500 focus:outline-none focus:bg-white block w-full p-3
     }
+
+    .text-error {
+        @apply text-red-500
+    }
 }
 
 body{
