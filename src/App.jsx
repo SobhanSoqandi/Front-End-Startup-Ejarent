@@ -3,6 +3,8 @@ import AuthContainer from "./Pages/Auth/AuthContainer"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "react-hot-toast"
 import CompleteProfile from "./Pages/Auth/CompleteProfile"
+import AppLayout from "./UI/AppLayout"
+import AdminPanelLayout from "./Pages/Admin/AdminPanelLayout"
 
 
 function App() {
@@ -16,14 +18,16 @@ function App() {
 
     <div dir="rtl" >
       <BrowserRouter>
-         <Toaster
-         position="top-left"
-        reverseOrder={false} 
-      />
+        <Toaster
+          position="top-left"
+          reverseOrder={false}
+        />
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/auth" element={<AuthContainer />} />
-            <Route path="/complete-profile" element={<CompleteProfile />} />
+            <Route path="/panel" element={<AdminPanelLayout />} >
+              <Route path="complete-profile" element={<CompleteProfile />} />
+            </Route>
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

@@ -17,7 +17,7 @@ function CompleteProfileForm() {
 
     const { isPending: isCompleting, mutateAsync } = useMutation({
         mutationFn: CompleteProfile,
-    })
+    });
 
     const CompleteProfileHandler = async (data) => {
 
@@ -61,57 +61,54 @@ function CompleteProfileForm() {
                 </div>
 
 
+                <div >
 
+                    <Input
+                        register={register}
+                        name="name"
+                        label="نام و نام خانوادگی :"
+                        type="text"
+                        placeholder="نام خودرا وارد کنید"
+                    />
 
-
-
-
-
-                <Input
-                    register={register}
-                    name="name"
-                    label="نام و نام خانوادگی :"
-                    type="text"
-                    placeholder="نام خودرا وارد کنید"
-                />
-
-                <Input
-                    register={register}
-                    name="national_code"
-                    label="کد ملی : "
-                    type="number"
-                    placeholder="کد ملی خودرا وارد کنید"
-                    validationSchema={{
-                        required: " وارد کردن کدملی ضروری است ",
-                        minLength: {
-                            value: 5,
-                            message: "کد ملی باید حداقل ۵ رقم باشد"
-                        },
-                        maxLength: {
-                            value: 10,
-                            message: " کد ملی باید از 10 رقم بیشتر نباشد "
-                        }
-                    }}
-                    errors={errors}
-                />
-
-
-                <RadioInputGroup
-                    label="جنسیت :"
-                    errors={errors}
-                    watch={watch}
-                    register={register}
-                    configs={{
-                        name: "gender",
-                        options: [
-                            {
-                                value: "male",
-                                label: " مرد ",
+                    <Input
+                        register={register}
+                        name="national_code"
+                        label="کد ملی : "
+                        type="number"
+                        placeholder="کد ملی خودرا وارد کنید"
+                        validationSchema={{
+                            required: " وارد کردن کدملی ضروری است ",
+                            minLength: {
+                                value: 5,
+                                message: "کد ملی باید حداقل ۵ رقم باشد"
                             },
-                            { value: "female", label: " زن " },
-                        ],
-                    }}
-                />
+                            maxLength: {
+                                value: 10,
+                                message: " کد ملی باید از 10 رقم بیشتر نباشد "
+                            }
+                        }}
+                        errors={errors}
+                    />
+
+                    <RadioInputGroup
+                        label="جنسیت :"
+                        errors={errors}
+                        watch={watch}
+                        register={register}
+                        configs={{
+                            name: "gender",
+                            options: [
+                                {
+                                    value: "male",
+                                    label: " مرد ",
+                                },
+                                { value: "female", label: " زن " },
+                            ],
+                        }}
+                    />
+
+                </div>
 
                 {
                     isCompleting ? <Loading /> :
@@ -119,9 +116,6 @@ function CompleteProfileForm() {
                             ثبت اطلاعات
                         </button>
                 }
-
-
-
 
             </form>
         </div>

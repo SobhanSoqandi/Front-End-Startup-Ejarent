@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\assets",
+    "\\src\\features",
+    "\\src\\features\\User",
+    "\\src\\hooks",
+    "\\src\\services",
+    "\\src\\UI",
+    "\\src\\UI\\Panel",
+    "\\src\\Utils"
+  ],
+  "SelectedNode": "\\src\\services\\httpServices.js",
+  "PreviewInSolutionExplorer": false
+}
