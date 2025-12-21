@@ -1,7 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Panel/Header';
+import useAuthorize from '../components/Auth/useAuthorize';
 
 function AppLayout({ children, setIsOpen }) {
+
+     useAuthorize();
+
     return (
         <div className="bg-gray-50" >
 

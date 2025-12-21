@@ -9,9 +9,12 @@ import { LuSquareArrowRight } from "react-icons/lu";
 import Loading from "../../UI/Loading";
 import toast from "react-hot-toast";
 import ToPersianNumber from "../../Utils/ToPersianNumber";
+import { useNavigate } from "react-router-dom";
 
 
 function CheckOtp({ phoneNumber, onBack }) {
+
+    const navigate = useNavigate();
 
     const [time, setTime] = useState(50)
 
@@ -28,6 +31,8 @@ function CheckOtp({ phoneNumber, onBack }) {
             localStorage.setItem("userphoneNumber" , phoneNumber);
             // localStorage.setItem("userPhone", phoneNumber);
             toast.success(message);
+            navigate("/complete-profile");
+            toast.arguments(" لطفا پروفایل خودرا تکمیل کنید ")
 
         } catch (error) {
             toast.error(error?.response?.data?.message);

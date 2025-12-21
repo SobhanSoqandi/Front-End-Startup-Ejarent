@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast"
 import CompleteProfile from "./Pages/Auth/CompleteProfile"
 import AppLayout from "./UI/AppLayout"
 import AdminPanelLayout from "./Pages/Admin/AdminPanelLayout"
+import ProtectedRoute from "./UI/ProtectedRoute"
 
 
 function App() {
@@ -25,8 +26,15 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/auth" element={<AuthContainer />} />
-            <Route path="/panel" element={<AdminPanelLayout />} >
-              <Route path="complete-profile" element={<CompleteProfile />} />
+            <Route path="complete-profile" element={<CompleteProfile />} />
+
+            <Route path="/panel"
+              element={
+                <ProtectedRoute>
+                  <AdminPanelLayout />
+                </ProtectedRoute>
+              } >
+
             </Route>
           </Routes>
         </QueryClientProvider>

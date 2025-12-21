@@ -8,6 +8,7 @@ import { HiCalendar } from 'react-icons/hi';
 import { NavLink } from 'react-router-dom';
 import { FaGripLinesVertical } from 'react-icons/fa6';
 import { CustomNavLink } from '../../UI/Panel/CustomNavlink';
+import Logout from '../../components/Auth/Logout';
 
 function AdminPanelLayout() {
 
@@ -54,6 +55,11 @@ function AdminPanelLayout() {
 
                             )
                         }
+
+                        <div className="bottom-0" >
+                            <Logout />
+                        </div>
+
                     </Sidebar>
 
                     <button

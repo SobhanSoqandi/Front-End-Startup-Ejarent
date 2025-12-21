@@ -32,3 +32,8 @@ export function CompleteProfile(data) {
 export function getUser() {
     return http.get("/user/profile").then((res) => res.data);
 }
+
+
+export function logoutApi() {
+    return http.post("/user/logout").then((res) => res.data);
+}
