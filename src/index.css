@@ -6,6 +6,12 @@
     .btn {
         @apply bg-blue-500 rounded-xl p-3 text-white cursor-pointer
     }
+    .btn--primary {
+        @apply bg-blue-500 rounded-xl p-2 text-white cursor-pointer
+    }
+    .btn--light {
+        @apply bg-white rounded-xl p-2 text-blue-500 cursor-pointer shadow
+    }
 
     .input--style {
         @apply bg-gray-100 rounded-xl focus:shadow-md focus:ring-1 focus:ring-blue-500 focus:outline-none focus:bg-white block w-full p-3
@@ -14,10 +20,19 @@
     .text-error {
         @apply text-red-500
     }
+
+    .tag--style {
+        @apply bg-white text-blue-500 shadow rounded-xl m-1 p-1 text-nowrap cursor-pointer
+    }
+
+    .textField__input {
+        @apply w-full py-3 px-4 rounded-xl text-blue-900 shadow border border-blue-100 bg-blue-100 hover:border-blue-500  transition-all duration-300 ease-out ;
+    }
 }
 
-body{
-     font-family: "Vazir";
+body {
+    font-family: "Vazir";
+    direction: rtl;
 }
 
 .logo {

@@ -41,13 +41,13 @@ function CompleteProfileForm() {
 
             <form onSubmit={handleSubmit(CompleteProfileHandler)} >
 
-                <div class="flex justify-center mb-6">
-                    <div class="relative">
+                <div className="flex justify-center mb-6">
+                    <div className="relative">
 
                         <img
                             src="https://via.placeholder.com/150"
                             alt="profile"
-                            class="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                            className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
                         />
 
                         <button
@@ -62,7 +62,6 @@ function CompleteProfileForm() {
 
 
                 <div >
-
                     <Input
                         register={register}
                         name="name"
@@ -106,14 +105,14 @@ function CompleteProfileForm() {
                                 { value: "female", label: " زن " },
                             ],
                         }}
-                    />
+                    />  
 
                 </div>
 
                 {
                     isCompleting ? <Loading /> :
                         <button className="btn w-full mt-5" >
-                            ثبت اطلاعات
+                               ثبت اطلاعات
                         </button>
                 }
 

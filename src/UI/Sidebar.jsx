@@ -1,13 +1,16 @@
 import React from 'react'
 
-function Sidebar({children}) {
+function Sidebar({ children , isCollapsed }) {
   return (
-    <div className="flex justify-center" >
-        <ul>
-            {children}
-        </ul>
+    <div
+      className={`flex p-3 ${isCollapsed ? "justify-center" : "justify-start"}`}
+    >
+      <ul>
+        {children}
+      </ul>
     </div>
   )
 }
 
 export default Sidebar
+

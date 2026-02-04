@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import AppLayout from '../../UI/AppLayout';
 import Sidebar from '../../UI/Sidebar';
-import { BiSolidDashboard } from 'react-icons/bi';
+import { BiSolidDashboard, BiUserCheck } from 'react-icons/bi';
 import { TbMessageReportFilled } from 'react-icons/tb';
 import { IoNotifications } from 'react-icons/io5';
 import { HiCalendar } from 'react-icons/hi';
@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 import { FaGripLinesVertical } from 'react-icons/fa6';
 import { CustomNavLink } from '../../UI/Panel/CustomNavlink';
 import Logout from '../../components/Auth/Logout';
+import FooterMobileMenu from '../../components/Landing/FooterMobileMenu';
 
 function AdminPanelLayout() {
 
@@ -17,12 +18,11 @@ function AdminPanelLayout() {
     const [isOpen, setIsOpen] = useState(true);
 
     const SidebarLink = [
-        { label: "داشبورد", icon: <BiSolidDashboard className="w-5 h-5 " />, path: "complete" },
-        { label: "پیام ها", icon: <TbMessageReportFilled className="w-5 h-5" />, path: "complete-profile", notif: "12" },
-        { label: " تنظیمات ", icon: <IoNotifications className="w-5 h-5" />, path: "Notifocation" },
-        { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-5 h-5" />, path: "callender" },
+        { label: "داشبورد", icon: <BiSolidDashboard className="w-6 h-6 " />, path: "complete" },
+        { label: "پیام ها", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "complete-profile", notif: "12" },
+        { label: " تنظیمات ", icon: <IoNotifications className="w-6 h-6" />, path: "Notifocation" },
+        { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-6 h-6" />, path: "callender" },
     ];
-
 
     return (
         <div>
@@ -32,15 +32,20 @@ function AdminPanelLayout() {
             >
                 <div
                     className={`
-                     fixed right-0 z-40 h-screen bg-white shadow m-2 rounded-2xl
+                     fixed right-0 z-40 h-screen bg-white shadow-lg border border-gray-50 m-2 rounded-2xl
                      transition-all duration-300 ease-in-out
                      ${isOpen ? "translate-x-0" : "translate-x-full"}
-                     ${isCollapsed ? "w-14" : "w-40"}
+                     ${isCollapsed ? "w-14" : "w-52"}
                      ${!isOpen && "invisible"}
                      `}
                 >
 
-                    <Sidebar>
+                    <Sidebar
+                        isCollapsed={isCollapsed}
+                    >
+                        
+                      
+
                         {
                             SidebarLink.map((item) =>
 
@@ -71,10 +76,10 @@ function AdminPanelLayout() {
                          flex items-center justify-center" >
                         <FaGripLinesVertical className="text-blue-500" />
                     </button>
-
                 </div>
 
             </AppLayout >
+
         </div >
     )
 }

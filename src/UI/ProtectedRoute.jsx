@@ -5,14 +5,15 @@ import toast from 'react-hot-toast'
 import Loading from './Loading'
 
 function ProtectedRoute({ children }) {
-  const navigate = useNavigate()
-  const { isLoading, isAuthenticated } = useAuthorize()
+  const navigate = useNavigate();
+  const { isLoading, isAuthenticated } = useAuthorize();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       toast.error("لطفا ابتدا وارد حساب خود شوید")
       navigate("/auth")
     }
+
   }, [isAuthenticated, isLoading, navigate])
 
   if (isLoading) {
@@ -23,12 +24,12 @@ function ProtectedRoute({ children }) {
     )
   }
 
-  // ⭐ مهم‌ترین خط
+  
   if (isAuthenticated) {
     return children
   }
 
-  return null
+ 
 }
 
 export default ProtectedRoute

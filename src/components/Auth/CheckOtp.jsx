@@ -12,7 +12,7 @@ import ToPersianNumber from "../../Utils/ToPersianNumber";
 import { useNavigate } from "react-router-dom";
 
 
-function CheckOtp({ phoneNumber, onBack }) {
+function CheckOtp({ phoneNumber = "09151540707", onBack }) {
 
     const navigate = useNavigate();
 
@@ -51,14 +51,8 @@ function CheckOtp({ phoneNumber, onBack }) {
 
 
     return (
-        <div className="flex flex-row-reverse min-h-screen select-none" >
-            <div className="hidden lg:flex w-1/2 items-center justify-center">
-                <img
-                    src="images\checkotp-image.svg"
-                    alt="کد تایید چهار رقمی"
-                    className=" mx-auto w-[700px]"
-                />
-            </div>
+        <div className="flex-1 lg:flex min-h-screen select-none" >
+            
 
 
 
@@ -122,16 +116,6 @@ function CheckOtp({ phoneNumber, onBack }) {
                         }
 
 
-
-
-
-
-                        {/* <Input
-                            // register={register}
-                            name="phoneNumber"
-                            type="text"
-                            label="لطفاً شماره موبایل خود را وارد کنید"
-                        /> */}
                         {
                             isCheckingOtp ? <Loading size='Medium' />
                                 : <button
@@ -142,6 +126,15 @@ function CheckOtp({ phoneNumber, onBack }) {
 
                     </form>
                 </div>
+            </div>
+
+
+            <div className="lg:flex w-1/2 items-center justify-center mx-auto">
+                <img
+                    src="images\checkotp-image.svg"
+                    alt="کد تایید چهار رقمی"
+                    className=" mx-auto w-[700px]"
+                />
             </div>
 
         </div>

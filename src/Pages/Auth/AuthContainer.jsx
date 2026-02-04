@@ -24,7 +24,7 @@ function AuthContainer() {
       case 2:
         return <CheckOtp
           onBack={() => setStep((s) => s - 1)}
-          phoneNumber={getValues("phoneNumber")}
+            phoneNumber={getValues("phoneNumber")}
         />
       default: return null;
     }

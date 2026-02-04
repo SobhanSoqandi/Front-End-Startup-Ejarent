@@ -6,13 +6,13 @@ import toast from 'react-hot-toast';
 import Loading from '../../UI/Loading';
 
 
-function SendOtp({setStep , handleSubmit , register}) {
+function SendOtp({ setStep, handleSubmit, register }) {
 
     const { isPending: isSendingOtp, mutateAsync } = useMutation({
         mutationFn: getOtp,
     })
 
-    
+
 
     const SendOtphandler = async (data) => {
 
@@ -28,14 +28,8 @@ function SendOtp({setStep , handleSubmit , register}) {
 
     return (
 
-        <div className="flex flex-row-reverse min-h-screen select-none" >
-            <div className="hidden lg:flex w-1/2 items-center justify-center">
-                <img
-                    src="images\login-image.svg"
-                    alt="ورود"
-                    className=" mx-auto w-[700px]"
-                />
-            </div>
+        <div className="flex-1 lg:flex min-h-screen select-none pt-28 lg:pt-0" >
+
 
 
             <div className="w-full lg:w-1/2 flex items-center justify-center px-4">
@@ -64,6 +58,14 @@ function SendOtp({setStep , handleSubmit , register}) {
 
                     </form>
                 </div>
+            </div>
+
+            <div className=" lg:flex w-1/2 items-center justify-center mx-auto">
+                <img
+                    src="images\login-image.svg"
+                    alt="ورود"
+                    className=" mx-auto w-[700px]"
+                />
             </div>
 
         </div>

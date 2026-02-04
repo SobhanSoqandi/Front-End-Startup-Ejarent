@@ -1,28 +1,33 @@
 import { Outlet } from 'react-router-dom';
 import Header from './Panel/Header';
 import useAuthorize from '../components/Auth/useAuthorize';
+import FooterMobileMenu from '../components/Landing/FooterMobileMenu';
+import Footer from '../UI/Landing/Footer';
+
 
 function AppLayout({ children, setIsOpen }) {
 
-     useAuthorize();
+    useAuthorize();
 
     return (
-        <div className="bg-gray-50" >
+        <div className="min-h-screen flex flex-col">
 
-            <div>
-                <Header
-                    setIsOpen={setIsOpen}
-                />
-            </div>
+            <Header setIsOpen={setIsOpen} />
 
-            <div className="flex" >
-                <div >
+            {/* Main Content */}
+            <div className="flex flex-grow">
+                <div>
                     {children}
                 </div>
 
-                <div className="m-4 w-full" >
+                <div className="m-4 w-full">
                     <Outlet />
                 </div>
+            </div>
+
+            {/* Footer */}
+            <div className="text-center z-50">
+                <Footer />
             </div>
 
         </div>
