@@ -1,88 +1,121 @@
-import React from 'react'
-import Input from '../../UI/Input'
-import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast';
-import { useMutation } from '@tanstack/react-query';
-import { addAdvertisementApi } from '../../services/advService';
-import useGetCategories from '../../features/Advertisement/useGetCategories';
+import React, { useEffect } from "react";
+import Input from "../../UI/Input";
 import RHFSelect from "../../UI/RHFSelect";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { addAdvertisementApi, editAdvertisementApi } from "../../services/advService";
+import useGetCategories from "../../features/Advertisement/useGetCategories";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AddAdv() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
-    const { isLoading: isFetchingCategories, categories } = useGetCategories();
-    console.log(categories);
-    const categoryOptions = categories?.map(category => ({
-        value: category.id.toString(), // تبدیل id به string
-        label: category.name // استفاده از فیلد name
+  const adv = state?.adv; // 👈 اگر بود یعنی edit
+  const isEditMode = Boolean(adv?.id);
+
+  const { isLoading: isFetchingCategories, categories } = useGetCategories();
+
+  const categoryOptions =
+    categories?.map((category) => ({
+      value: category.id.toString(),
+      label: category.name,
     })) || [];
 
-    // اضافه کردن گزینه اول (پیشفرض)
-    const selectOptions = [
-        { value: "", label: "لطفا دسته‌بندی را انتخاب کنید" },
-        ...categoryOptions
-    ];
+  const selectOptions = [
+    { value: "", label: "لطفا دسته‌بندی را انتخاب کنید" },
+    ...categoryOptions,
+  ];
 
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      title: adv?.title || "",
+      description: adv?.description || "",
+      price: adv?.price || "",
+      Id_category: adv?.categoryId?.toString() || "",
+    },
+  });
 
-    const { register, handleSubmit } = useForm();
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: (data) =>
+      isEditMode
+        ? editAdvertisementApi({ id: adv.id, data })
+        : addAdvertisementApi(data),
+  });
 
-    const { isPending: isAdding, mutateAsync } = useMutation({
-        mutationFn: addAdvertisementApi,
-    });
-
-    const AddAdvertisementHandler = async (data) => {
-        try {
-            const { message } = await mutateAsync(data);
-            toast.success(message);
-        } catch (error) {
-            toast.error(error?.response?.data?.message);
-        }
+  useEffect(() => {
+    if (adv) {
+      reset({
+        title: adv.title,
+        description: adv.description,
+        price: adv.price,
+        Id_category: adv.categoryId?.toString(),
+      });
     }
+  }, [adv, reset]);
 
-    return (
-        <div className="max-w-3xl mx-auto p-4 mt-20 shadow rounded-lg" >
-            <form onSubmit={handleSubmit(AddAdvertisementHandler)} >
-                <div className="flex justify-around" >
-                    <Input
-                        register={register}
-                        name="title"
-                        label=" عنوان آگهی  :"
-                        type="text"
-                        placeholder=" عنوان آگهی را وارد کنید   "
-                    />
-                    <Input
-                        register={register}
-                        name="description"
-                        label=" عنوان آگهی  :"
-                        type="text"
-                        placeholder=" عنوان آگهی را وارد کنید   "
-                    />
+  const onSubmit = async (data) => {
+    try {
+      const { message } = await mutateAsync(data);
+      toast.success(message);
+      navigate("/myadv");
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
 
-                    <Input
-                        register={register}
-                        name="price"
-                        label="قیمت:"
-                        type="number"
-                        placeholder="قیمت را وارد کنید"
-                        required
-                    />
+  return (
+    <div className="max-w-3xl mx-auto p-4 mt-20 shadow rounded-lg">
+      <h1 className="text-xl font-bold mb-6">
+        {isEditMode ? "ویرایش آگهی" : "ثبت آگهی جدید"}
+      </h1>
 
-                    <RHFSelect
-                        label="دسته‌بندی:"
-                        required={true}
-                        name="Id_category" // نام باید دقیقا این باشه
-                        register={register}
-                        options={selectOptions}
-                    />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-around flex-wrap gap-4">
+          <Input
+            register={register}
+            name="title"
+            label="عنوان آگهی:"
+            type="text"
+            placeholder="عنوان آگهی را وارد کنید"
+          />
 
-                </div>
+          <Input
+            register={register}
+            name="description"
+            label="توضیحات:"
+            type="text"
+            placeholder="توضیحات آگهی را وارد کنید"
+          />
 
-                <button className="btn btn--primary" >
-                    onsubmit
-                </button>
+          <Input
+            register={register}
+            name="price"
+            label="قیمت:"
+            type="number"
+            placeholder="قیمت را وارد کنید"
+          />
 
-            </form>
+          <RHFSelect
+            label="دسته‌بندی:"
+            required
+            name="Id_category"
+            register={register}
+            options={selectOptions}
+          />
         </div>
-    )
+
+        <button className="btn btn--primary mt-6" disabled={isPending}>
+          {isPending
+            ? "در حال ذخیره..."
+            : isEditMode
+            ? "ذخیره تغییرات"
+            : "ثبت آگهی"}
+        </button>
+      </form>
+    </div>
+  );
 }
 
-export default AddAdv
+export default AddAdv;

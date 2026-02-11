@@ -10,6 +10,8 @@ function Filter({ filterField, options }) {
         setSearchParams(searchParams);
     }
 
+    
+
 
     return (
         <div className="flex items-center gap-x-2 text-sm">

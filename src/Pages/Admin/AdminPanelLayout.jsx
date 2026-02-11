@@ -19,7 +19,7 @@ function AdminPanelLayout() {
 
     const SidebarLink = [
         { label: "داشبورد", icon: <BiSolidDashboard className="w-6 h-6 " />, path: "complete" },
-        { label: "پیام ها", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "complete-profile", notif: "12" },
+        { label: " آگهی های من ", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "myadv", notif: "12" },
         { label: " تنظیمات ", icon: <IoNotifications className="w-6 h-6" />, path: "Notifocation" },
         { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-6 h-6" />, path: "callender" },
     ];

@@ -10,6 +10,8 @@ import Landing from "./Pages/Landing/Landing"
 import LandingLayout from "./UI/Landing/LandingLayout"
 import SingleAdv from "./Pages/Adv/SingleAdv"
 import AddAdv from "./Pages/Adv/AddAdv"
+import MyAdv from "./Pages/Admin/MyAdv"
+import CategoriesList from "./Pages/Admin/CategoriesList"
 
 
 function App() {
@@ -32,17 +34,21 @@ function App() {
             <Route />
             <Route path="/auth" element={<AuthContainer />} />
             <Route path="/add" element={<AddAdv />} />
-            {/* <Route path="/complete-profile" element={<CompleteProfile />} /> */}
+
             {/* <Route path="/singleAds" element={<SingleAds />} /> */}
 
             <Route path="/panel"
               element={
-                // <ProtectedRoute>
-                <AdminPanelLayout />
-                //  </ProtectedRoute>
+                <ProtectedRoute>
+                  <AdminPanelLayout />
+                </ProtectedRoute>
               } >
               {/* outlet */}
               <Route path="complete-profile" element={<CompleteProfile />} />
+              <Route path="myadv" element={<MyAdv />} />
+              <Route path="editmyadv" element={<AddAdv />} />
+              <Route path="categories" element={<CategoriesList />} />
+
 
             </Route>
 

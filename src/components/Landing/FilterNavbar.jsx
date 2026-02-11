@@ -1,7 +1,10 @@
+import { useSearchParams } from 'react-router-dom';
 import Filter from '../../UI/Landing/Filter';
 import FilterDropDown from '../../UI/Landing/FilterDropDown';
 
 function FilterNavbar() {
+
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const sortOptions = [
         {
@@ -22,20 +25,30 @@ function FilterNavbar() {
         },
         {
             label: "ارزان ترین",
-            value: "OPEN",
+            value: "cheap",
         },
         {
             label: "گران ترین",
-            value: "CLOSED",
+            value: "expensive",
         },
     ];
+
+    const handleClearFilter = () => {
+        const newSearchParams = new URLSearchParams(searchParams);
+
+        newSearchParams.delete("sort");
+        newSearchParams.delete("status");
+
+        setSearchParams(newSearchParams);
+    };
+
 
     return (
         <div className="" >
 
             <div className="space-y-5" >
                 <Filter
-                    filterField="status"
+                    filterField="sort"
                     options={statusOptions}
                 />
 
@@ -50,7 +63,9 @@ function FilterNavbar() {
                     اعمال فیلتر
                 </button>
 
-                <button className="btn--light w-full border border-gray-100 " >
+                <button 
+                onClick={handleClearFilter}
+                className="btn--light w-full border shadow " >
                     حذف فیلتر
                 </button>
             </div>

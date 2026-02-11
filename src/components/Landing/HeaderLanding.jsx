@@ -1,10 +1,33 @@
 import { TbCalendarTime, TbEyeSearch, TbSearch, TbUser } from "react-icons/tb";
 import { FaFolderPlus, FaRegUser } from "react-icons/fa";
 import { FaRegCalendarPlus } from "react-icons/fa6";
-
+import { useSearchParams } from "react-router-dom";
+import SearchInput from "./SearchInput";
 
 
 function HeaderLanding() {
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const searchValue = searchParams.get("search") || "";
+
+  function handleChange(e) {
+    const value = e.target.value.trim();
+
+    if (value) {
+      searchParams.set("search", value);
+    } else {
+      searchParams.delete("search");
+    }
+
+    setSearchParams(searchParams);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
+
 
   const HeaderLink = [
     {
@@ -23,28 +46,8 @@ function HeaderLanding() {
 
       <div className="" >
 
-        <form className="flex items-center max-w-lg mx-auto space-x-2">
-          <label for="voice-search" className="sr-only">Search</label>
-          <div className="relative w-full">
-            <div className="absolute text-blue-500 inset-y-0 start-0 text-3xl flex items-center ps-3  ">
-              <TbEyeSearch />
-            </div>
-            <input
-              className="block w-[270px] lg:w-[400px] h-[50px] bg-gray-100 rounded-xl
-         placeholder:text-sm
-         py-2 pe-10 ps-12
-         focus:outline-none focus:ring-1 focus:ring-gray-50"
-              placeholder=" جستجو در اجارنت "
-            />
-
-
-            <button type="button" className="absolute inset-y-0 end-0 flex items-center pe-3 text-gray-400 text-2xl">
-              <TbSearch />
-            </button>
-          </div>
-
-        </form>
-
+        <SearchInput />
+    
       </div>
 
 
@@ -80,3 +83,6 @@ function HeaderLanding() {
 }
 
 export default HeaderLanding;
+
+
+
