@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 function Adv({ Advertisement }) {
 
-    console.log(Advertisement);
      const navigate = useNavigate();
 
      const handleClick = () => {

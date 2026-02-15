@@ -1,158 +1,178 @@
-// src/components/SingleAdv.jsx
+// src/pages/SingleAdv.jsx
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import useGetSingleAdv from '../../features/Advertisement/useGetSingleAdv';
+import Loading from '../../UI/Loading';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-// داده‌های آگهی‌ها (می‌تونید بعداً از API یا Context بیارید)
-const allAdvertisements = [
-    {
-        id: "1",
-        title: "خودرو 206",
-        price: "",
-        categories: "لوازم خانگی",
-        description: "این یک متن توضیح است عریزم",
-        address: "خیابان طلوع",
-        image: "images/defualt-image.jpg",
-        details: "جزئیات کامل خودرو 206...",
-        phone: "09123456789",
-        date: "۱۴۰۳/۰۱/۱۵"
-    },
-    {
-        id: "2",
-        title: "منزل 100 متری در خیابان فرشته",
-        price: "500000000",
-        categories: "مسکن",
-        description: "این یک متن توضیح است عریزم",
-        address: "اتوبان شهید باقری",
-        image: "images/defualt-image.jpg",
-        details: "ویلای ۱۰۰ متری، سند دار، قابل معاوضه...",
-        phone: "09129876543",
-        date: "۱۴۰۳/۰۱/۱۶"
-    },
-    {
-        id: "3",
-        title: "دوربین فیلم برداری",
-        price: "400000",
-        categories: "مجالس و مراسمات",
-        description: "این یک متن توضیح است عریزم",
-        address: "بلوار گلها",
-        image: "images/defualt-image.jpg",
-        details: "دوربین حرفه ای فیلم برداری Canon...",
-        phone: "09351234567",
-        date: "۱۴۰۳/۰۱/۱۷"
-    },
-];
+// فقط یه آیکون ساده
+import { HiOutlineChevronRight } from "react-icons/hi";
 
 function SingleAdv() {
-    const { id } = useParams(); // گرفتن ID از URL
-    const navigate = useNavigate();
-    
-    // پیدا کردن آگهی با ID دریافتی
-    const advertisement = allAdvertisements.find(ad => ad.id === id);
-    
-    // اگر آگهی پیدا نشد
-    if (!advertisement) {
-        return (
-            <div className="text-center py-20">
-                <h2 className="text-2xl font-bold text-red-500">آگهی پیدا نشد!</h2>
-                <button 
-                    onClick={() => navigate('/')}
-                    className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                    بازگشت به لیست آگهی‌ها
-                </button>
-            </div>
-        );
-    }
-    
-    // فرمت کردن قیمت با جداکننده هزارگان
-    const formatPrice = (price) => {
-        if (!price) return "توافقی";
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    };
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { singleAdv: adv, isLoading, isError } = useGetSingleAdv(id);
 
-    return (
-        <div className="max-w-4xl mx-auto p-4 sm:p-6">
-            {/* دکمه بازگشت */}
-            <button 
-                onClick={() => navigate(-1)}
-                className="mb-6 px-4 py-2 flex items-center gap-2 text-blue-500 hover:text-blue-600"
+  // تاریخ ساز
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fa-IR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (isLoading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Loading />
+    </div>
+  );
+
+  if (isError || !adv) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <p className="text-red-500 text-xl mb-4">آگهی پیدا نشد</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+        >
+          بازگشت
+        </button>
+      </div>
+    </div>
+  );
+
+  // آماده‌سازی تصاویر برای نمایش
+  const images = adv.images && adv.images.length > 0 
+    ? adv.images 
+    : [{ image_path: 'images/defualt-image.jpg' }]; // اگر تصویر نبود، فقط یه آرایه با یه آیتم
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8" dir="rtl">
+      <div className="container mx-auto px-4 max-w-5xl">
+        
+        {/* دکمه بازگشت */}
+        <button 
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-gray-600 hover:text-blue-600 mb-6"
+        >
+          <HiOutlineChevronRight />
+          <span>بازگشت</span>
+        </button>
+
+        {/* کارت اصلی */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          
+          {/* گالری تصاویر با Swiper */}
+          <div className="w-full bg-gray-100">
+            <Swiper
+              modules={[Navigation, Pagination]}
+              navigation
+              pagination={{ clickable: true }}
+              loop={images.length > 1}
+              className="w-full h-96"
             >
-                <span>←</span>
-                بازگشت
+              {images.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="w-full h-full flex items-center justify-center p-4">
+                    <img 
+                      src={
+                        image.image_path?.includes('defualt-image') 
+                          ? image.image_path 
+                          : `http://localhost:8000/storage/${image.image_path}`
+                      }
+                      alt={`${adv.title} - تصویر ${index + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => {
+                        e.target.src = '/images/defualt-image.jpg';
+                      }}
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* شمارنده تصاویر (اگه بیشتر از ۱ تا باشه) */}
+            {images.length > 1 && (
+              <div className="text-center py-2 text-sm text-gray-500">
+                {images.length} تصویر
+              </div>
+            )}
+          </div>
+
+          {/* اطلاعات */}
+          <div className="p-6">
+            
+            {/* عنوان و تاریخ */}
+            <div className="flex justify-between items-start mb-4">
+              <h1 className="text-2xl font-bold text-gray-800">{adv.title}</h1>
+              <span className="text-sm text-gray-500">
+                {formatDate(adv.created_at)}
+              </span>
+            </div>
+
+            {/* قیمت */}
+            <div className="mb-6">
+              <span className="text-sm text-gray-600">قیمت:</span>
+              <p className="text-3xl font-bold text-blue-600">
+                {adv.price?.toLocaleString() || 'توافقی'}
+                {adv.price && <span className="text-base mr-1">تومان</span>}
+              </p>
+            </div>
+
+            {/* توضیحات */}
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold mb-2">توضیحات</h2>
+              <p className="text-gray-700 leading-relaxed">
+                {adv.description || 'توضیحاتی ثبت نشده'}
+              </p>
+            </div>
+
+            {/* ویژگی‌ها (اگه باشن) */}
+            {adv.attributes && adv.attributes.length > 0 && (
+              <div className="mb-6">
+                <h2 className="text-lg font-semibold mb-3">مشخصات</h2>
+                <div className="grid grid-cols-2 gap-3">
+                  {adv.attributes.map((attr, idx) => (
+                    <div key={idx} className="border rounded-lg p-3">
+                      <p className="text-sm text-gray-500">{attr.name}</p>
+                      <p className="font-medium">{attr.pivot?.value || attr.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* اطلاعات فروشنده */}
+            {adv.user && (
+              <div className="border-t pt-6">
+                <h2 className="text-lg font-semibold mb-3">فروشنده</h2>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl">
+                    {adv.user.name?.charAt(0) || 'U'}
+                  </div>
+                  <div>
+                    <p className="font-medium">{adv.user.name || 'کاربر'}</p>
+                    <p className="text-sm text-gray-500">{adv.user.phone || 'شماره ثبت نشده'}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* دکمه تماس */}
+            <button className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+              تماس با فروشنده
             </button>
-            
-            {/* عکس اصلی */}
-            <div className="mb-8">
-                <img 
-                    src={advertisement.image} 
-                    alt={advertisement.title}
-                    className="w-full h-64 sm:h-96 object-cover rounded-xl shadow-lg"
-                />
-            </div>
-            
-            {/* اطلاعات آگهی */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="border-b pb-4 mb-6">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-                        {advertisement.title}
-                    </h1>
-                    
-                    <div className="flex flex-wrap gap-4 mt-4">
-                        <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm">
-                            {advertisement.categories}
-                        </span>
-                        <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                            {advertisement.address}
-                        </span>
-                        <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">
-                            {advertisement.date}
-                        </span>
-                    </div>
-                </div>
-                
-                {/* قیمت */}
-                <div className="mb-8">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">قیمت:</h3>
-                    <div className="text-2xl font-bold text-gray-900">
-                        {formatPrice(advertisement.price)} تومان
-                    </div>
-                </div>
-                
-                {/* توضیحات */}
-                <div className="mb-8">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">توضیحات:</h3>
-                    <p className="text-gray-600 leading-relaxed">
-                        {advertisement.description}
-                    </p>
-                </div>
-                
-                {/* جزئیات کامل */}
-                <div className="mb-8">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">جزئیات کامل:</h3>
-                    <p className="text-gray-600 leading-relaxed">
-                        {advertisement.details}
-                    </p>
-                </div>
-                
-                {/* اطلاعات تماس */}
-                <div className="bg-blue-50 rounded-lg p-5">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-3">اطلاعات تماس:</h3>
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-600">تلفن:</span>
-                            <span className="font-bold text-gray-800">{advertisement.phone}</span>
-                        </div>
-                        <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
-                            تماس
-                        </button>
-                        <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
-                            چت
-                        </button>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default SingleAdv;

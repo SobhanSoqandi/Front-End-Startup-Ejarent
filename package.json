@@ -25,6 +25,7 @@
     "react-otp-input": "^3.1.1",
     "react-router-dom": "^7.9.4",
     "react-spinners": "^0.17.0",
+    "swiper": "^12.1.1",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {

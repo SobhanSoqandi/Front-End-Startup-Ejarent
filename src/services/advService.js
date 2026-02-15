@@ -12,9 +12,6 @@ export function addAdvertisementApi(data) {
     return http.post("/Advertisement/store", data).then((res) => res.data);
 }
 
-export function getCategoriesApi() {
-    return http.get("/categories").then((res) => res.data);
-}
 
 export function getMyAdvertisementApi() {
     return http.get("/advertisement/my").then((res) => res.data);
@@ -28,4 +25,8 @@ export function editAdvertisementApi({ id, data }) {
 
 export function deleteAdvertisementApi(id) {
     return http.delete(`/advertisement/${id}/delete`);
+}
+
+export function getSingleAdvertisementApi(id) {
+    return http.get(`/Advertisement/${id}/show`).then(res => res.data);
 }

@@ -12,6 +12,7 @@ import SingleAdv from "./Pages/Adv/SingleAdv"
 import AddAdv from "./Pages/Adv/AddAdv"
 import MyAdv from "./Pages/Admin/MyAdv"
 import CategoriesList from "./Pages/Admin/CategoriesList"
+import UsersList from "./Pages/Admin/UsersList"
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
               <Route path="myadv" element={<MyAdv />} />
               <Route path="editmyadv" element={<AddAdv />} />
               <Route path="categories" element={<CategoriesList />} />
+              <Route path="admin/users" element={<UsersList />} />
 
 
             </Route>

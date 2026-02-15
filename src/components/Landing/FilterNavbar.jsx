@@ -1,20 +1,26 @@
 import { useSearchParams } from 'react-router-dom';
 import Filter from '../../UI/Landing/Filter';
 import FilterDropDown from '../../UI/Landing/FilterDropDown';
+import useGetCategories from '../../features/Advertisement/useGetCategories';
 
-function FilterNavbar() {
+function FilterNavbar({ setOpen }) {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const sortOptions = [
+    const { isLoading, isError, categories } = useGetCategories();
+    console.log(categories);
+
+
+
+    const categoryOptions = [
         {
-            label: "مرتب سازی (جدید ترین)",
-            value: "latest",
+            label: "همه دسته‌بندی‌ها",
+            value: "",  
         },
-        {
-            label: "مرتب سازی (قدیمی ترین)",
-            value: "earliest",
-        },
+        ...(categories?.map(category => ({
+            label: category.name,
+            value: String(category.id)
+        })) || [])
     ];
 
 
@@ -38,8 +44,8 @@ function FilterNavbar() {
 
         newSearchParams.delete("sort");
         newSearchParams.delete("status");
-
         setSearchParams(newSearchParams);
+        setOpen(false);
     };
 
 
@@ -52,20 +58,22 @@ function FilterNavbar() {
                     options={statusOptions}
                 />
 
-                <FilterDropDown filterField="sort" options={sortOptions} />
-                <FilterDropDown filterField="sort" options={sortOptions} />
+                <FilterDropDown filterField="category" options={categoryOptions} />
+                <FilterDropDown filterField="sort" options={categoryOptions} />
             </div>
 
 
             <div className="flex my-5 gap-3" >
 
-                <button className="btn btn--primary w-full " >
+                <button
+                    onClick={setOpen}
+                    className="btn btn--primary w-full " >
                     اعمال فیلتر
                 </button>
 
-                <button 
-                onClick={handleClearFilter}
-                className="btn--light w-full border shadow " >
+                <button
+                    onClick={handleClearFilter}
+                    className="btn--light w-full border shadow " >
                     حذف فیلتر
                 </button>
             </div>

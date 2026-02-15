@@ -10,19 +10,33 @@ import { FaGripLinesVertical } from 'react-icons/fa6';
 import { CustomNavLink } from '../../UI/Panel/CustomNavlink';
 import Logout from '../../components/Auth/Logout';
 import FooterMobileMenu from '../../components/Landing/FooterMobileMenu';
+import useUser from '../../features/User/useUser';
+import { FaUsers } from 'react-icons/fa';
 
 function AdminPanelLayout() {
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
+    const { user } = useUser();
+
+
+
     const [isOpen, setIsOpen] = useState(true);
 
-    const SidebarLink = [
-        { label: "داشبورد", icon: <BiSolidDashboard className="w-6 h-6 " />, path: "complete" },
-        { label: " آگهی های من ", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "myadv", notif: "12" },
-        { label: " تنظیمات ", icon: <IoNotifications className="w-6 h-6" />, path: "Notifocation" },
-        { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-6 h-6" />, path: "callender" },
-    ];
+    const isAdmin = user?.role === 2;
+
+    const SidebarLink = isAdmin
+        ? [
+            { label: "داشبورد", icon: <FaUsers className="w-6 h-6" />, path: "complete" },
+            { label: "مدیریت کاربران", icon: <FaUsers className="w-6 h-6" />, path: "users" },
+            { label: "مدیریت سیستم", icon: <FaUsers className="w-6 h-6" />, path: "system" },
+        ]
+        : [
+            { label: "داشبورد", icon: <BiSolidDashboard className="w-6 h-6" />, path: "complete" },
+            { label: " آگهی های من ", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "myadv", notif: "12" },
+            { label: " دسته بندی ها ", icon: <IoNotifications className="w-6 h-6" />, path: "categories" },
+            { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-6 h-6" />, path: "callender" },
+        ];
 
     return (
         <div>
@@ -43,8 +57,8 @@ function AdminPanelLayout() {
                     <Sidebar
                         isCollapsed={isCollapsed}
                     >
-                        
-                      
+
+
 
                         {
                             SidebarLink.map((item) =>

@@ -1,11 +1,13 @@
 import { TbCalendarTime, TbEyeSearch, TbSearch, TbUser } from "react-icons/tb";
 import { FaFolderPlus, FaRegUser } from "react-icons/fa";
 import { FaRegCalendarPlus } from "react-icons/fa6";
-import { useSearchParams } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import SearchInput from "./SearchInput";
 
 
 function HeaderLanding() {
+
+  const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -56,20 +58,24 @@ function HeaderLanding() {
         <ul className="flex gap-x-5 items-center " >
           {
             HeaderLink.map((item) => (
-              <li >
+              <li className=" hidden" >
                 {item.label}
                 {item.icon}
               </li>
             ))
           }
 
-          <li className="flex items-center gap-x-1 text-blue-600 border-2 border-blue-500 p-2 rounded-xl" >
-            <FaRegCalendarPlus className="text-xl" />
+          <li 
+           onClick={() => navigate("/add")}
+          className="flex items-center gap-x-1 text-blue-600 border-2 border-blue-500 p-2 rounded-xl" >
+            <FaRegCalendarPlus 
+            className="text-xl" />
             افزودن آگهی
           </li>
 
-          <li className="flex  items-center bg-blue-500 text-white p-2 rounded-lg" >
-
+          <li 
+          onClick={() => navigate("/panel") }
+          className="flex  items-center bg-blue-500 text-white p-2 rounded-lg" >
             <FaRegUser />
             حساب کاربری
 

@@ -25,7 +25,9 @@ function Navbar() {
                 onClose={() => setOpen(false)}
                 title="فیلتر آگهی ها"
             >
-               <FilterNavbar />
+               <FilterNavbar 
+               setOpen={() =>setOpen(false)}
+               />
             </Modal>
         </div>
     )

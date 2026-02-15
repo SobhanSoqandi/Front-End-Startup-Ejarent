@@ -1,21 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Input from "../../UI/Input";
 import RHFSelect from "../../UI/RHFSelect";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { addAdvertisementApi, editAdvertisementApi } from "../../services/advService";
 import useGetCategories from "../../features/Advertisement/useGetCategories";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// ================== ATTRIBUTE CONFIG ==================
+
+const CATEGORY_ATTRIBUTES = {
+  1: [
+    { id: 1, title: "رنگ" },
+    { id: 2, title: "مدل" },
+  ],
+  2: [
+    { id: 3, title: "متراژ (متر مربع)" },
+    { id: 4, title: "تعداد اتاق" },
+  ],
+  3: [
+    { id: 5, title: "برند" },
+    { id: 6, title: "وضعیت" },
+  ],
+};
+
+// =====================================================
+
 function AddAdv() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const adv = state?.adv; // 👈 اگر بود یعنی edit
+  const adv = state?.adv;
   const isEditMode = Boolean(adv?.id);
 
-  const { isLoading: isFetchingCategories, categories } = useGetCategories();
+  const { categories } = useGetCategories();
 
   const categoryOptions =
     categories?.map((category) => ({
@@ -28,14 +47,24 @@ function AddAdv() {
     ...categoryOptions,
   ];
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, control } = useForm({
     defaultValues: {
       title: adv?.title || "",
       description: adv?.description || "",
       price: adv?.price || "",
       Id_category: adv?.categoryId?.toString() || "",
+      attributes: [],
     },
   });
+
+  const selectedCategory = useWatch({
+    control,
+    name: "Id_category",
+  });
+
+  const attributes = useMemo(() => {
+    return CATEGORY_ATTRIBUTES[selectedCategory] || [];
+  }, [selectedCategory]);
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: (data) =>
@@ -57,7 +86,18 @@ function AddAdv() {
 
   const onSubmit = async (data) => {
     try {
-      const { message } = await mutateAsync(data);
+      const payload = {
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        Id_category: data.Id_category,
+        attributes: attributes.map((attr, index) => ({
+          id: attr.id,
+          value: data.attributes?.[index]?.value || "",
+        })),
+      };
+
+      const { message } = await mutateAsync(payload);
       toast.success(message);
       navigate("/myadv");
     } catch (error) {
@@ -105,6 +145,25 @@ function AddAdv() {
             options={selectOptions}
           />
         </div>
+
+        {attributes.length > 0 && (
+          <div className="w-full mt-8">
+            <h3 className="font-bold mb-4">ویژگی‌ها</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {attributes.map((attr, index) => (
+                <Input
+                  key={attr.id}
+                  register={register}
+                  name={`attributes.${index}.value`}
+                  label={attr.title}
+                  type="text"
+                  placeholder={`مقدار ${attr.title} را وارد کنید`}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         <button className="btn btn--primary mt-6" disabled={isPending}>
           {isPending

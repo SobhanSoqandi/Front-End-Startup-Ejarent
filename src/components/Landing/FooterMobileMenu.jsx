@@ -12,7 +12,7 @@ const FooterItem = [
   {
     label: " افزودن آگهی   ",
     icon: <FaRegCalendarPlus />,
-    link: "/complete-profile"
+    link: "/add"
   }, {
     label: " پسندها ",
     icon: <FaBookmark />,
@@ -38,10 +38,6 @@ function FooterMobileMenu() {
             />
           ))
         }
-
-
-
-
 
       </ul>
     </div>
