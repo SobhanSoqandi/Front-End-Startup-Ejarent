@@ -1,4 +1,4 @@
-// src/pages/SingleAdv.jsx
+
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useGetSingleAdv from '../../features/Advertisement/useGetSingleAdv';
@@ -9,7 +9,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// فقط یه آیکون ساده
 import { HiOutlineChevronRight } from "react-icons/hi";
 
 function SingleAdv() {
@@ -37,7 +36,7 @@ function SingleAdv() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <p className="text-red-500 text-xl mb-4">آگهی پیدا نشد</p>
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="bg-blue-600 text-white px-6 py-2 rounded-lg"
         >
@@ -48,16 +47,16 @@ function SingleAdv() {
   );
 
   // آماده‌سازی تصاویر برای نمایش
-  const images = adv.images && adv.images.length > 0 
-    ? adv.images 
+  const images = adv.images && adv.images.length > 0
+    ? adv.images
     : [{ image_path: 'images/defualt-image.jpg' }]; // اگر تصویر نبود، فقط یه آرایه با یه آیتم
 
   return (
     <div className="min-h-screen bg-gray-50 py-8" dir="rtl">
       <div className="container mx-auto px-4 max-w-5xl">
-        
+
         {/* دکمه بازگشت */}
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-gray-600 hover:text-blue-600 mb-6"
         >
@@ -67,7 +66,7 @@ function SingleAdv() {
 
         {/* کارت اصلی */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-          
+
           {/* گالری تصاویر با Swiper */}
           <div className="w-full bg-gray-100">
             <Swiper
@@ -80,11 +79,11 @@ function SingleAdv() {
               {images.map((image, index) => (
                 <SwiperSlide key={index}>
                   <div className="w-full h-full flex items-center justify-center p-4">
-                    <img 
+                    <img
                       src={
-                        image.image_path?.includes('defualt-image') 
-                          ? image.image_path 
-                          : `http://localhost:8000/storage/${image.image_path}`
+                        image.image_path?.includes('defualt-image')
+                          ? image.image_path
+                          : `http://localhost:8000/${image.image_path}`
                       }
                       alt={`${adv.title} - تصویر ${index + 1}`}
                       className="max-w-full max-h-full object-contain"
@@ -92,6 +91,7 @@ function SingleAdv() {
                         e.target.src = '/images/defualt-image.jpg';
                       }}
                     />
+
                   </div>
                 </SwiperSlide>
               ))}
@@ -107,7 +107,7 @@ function SingleAdv() {
 
           {/* اطلاعات */}
           <div className="p-6">
-            
+
             {/* عنوان و تاریخ */}
             <div className="flex justify-between items-start mb-4">
               <h1 className="text-2xl font-bold text-gray-800">{adv.title}</h1>

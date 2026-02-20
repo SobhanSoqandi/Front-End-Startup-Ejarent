@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import AppLayout from '../../UI/AppLayout';
 import Sidebar from '../../UI/Sidebar';
-import { BiSolidDashboard, BiUserCheck } from 'react-icons/bi';
+import { BiSolidCategoryAlt } from 'react-icons/bi';
+import { RiDashboard3Fill } from "react-icons/ri";
 import { TbMessageReportFilled } from 'react-icons/tb';
 import { IoNotifications } from 'react-icons/io5';
 import { HiCalendar } from 'react-icons/hi';
@@ -9,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 import { FaGripLinesVertical } from 'react-icons/fa6';
 import { CustomNavLink } from '../../UI/Panel/CustomNavlink';
 import Logout from '../../components/Auth/Logout';
-import FooterMobileMenu from '../../components/Landing/FooterMobileMenu';
+import { IoIosSwitch } from "react-icons/io";
 import useUser from '../../features/User/useUser';
 import { FaUsers } from 'react-icons/fa';
 
@@ -17,9 +18,7 @@ function AdminPanelLayout() {
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
-    const { user } = useUser();
-
-
+    const { user } = useUser(); 
 
     const [isOpen, setIsOpen] = useState(true);
 
@@ -27,12 +26,17 @@ function AdminPanelLayout() {
 
     const SidebarLink = isAdmin
         ? [
-            { label: "داشبورد", icon: <FaUsers className="w-6 h-6" />, path: "complete" },
-            { label: "مدیریت کاربران", icon: <FaUsers className="w-6 h-6" />, path: "users" },
-            { label: "مدیریت سیستم", icon: <FaUsers className="w-6 h-6" />, path: "system" },
+            { label: "داشبورد", icon: <RiDashboard3Fill className="w-6 h-6" />, path: "/dashboard" },
+            { label: "مدیریت کاربران", icon: <FaUsers className="w-6 h-6" />, path: "admin/users" },
+            {
+                label: " دسته بندی های سیستم ", icon: <BiSolidCategoryAlt
+                    className="w-6 h-6" />, path: "admin/categories"
+            },
+            { label: " ویژگی ها ", icon: <IoIosSwitch className="w-6 h-6" />, path: "admin/attributes" },
+
         ]
         : [
-            { label: "داشبورد", icon: <BiSolidDashboard className="w-6 h-6" />, path: "complete" },
+            { label: "داشبورد", icon: <RiDashboard3Fill className="w-6 h-6" />, path: "" },
             { label: " آگهی های من ", icon: <TbMessageReportFilled className="w-6 h-6" />, path: "myadv", notif: "12" },
             { label: " دسته بندی ها ", icon: <IoNotifications className="w-6 h-6" />, path: "categories" },
             { label: " مدریت آگهی ها ", icon: <HiCalendar className="w-6 h-6" />, path: "callender" },

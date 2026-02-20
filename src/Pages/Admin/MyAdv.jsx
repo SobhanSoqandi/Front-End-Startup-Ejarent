@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import useGetMyAdv from "../../features/Advertisement/useGetMyAdv";
-import Modal from "../../UI/Modal";
 import AlertModal from "../../UI/AlertModal";
 import ConfirmDelete from "../../UI/ConfirmDelete";
 import useDeleteMyAdv from "../../features/Advertisement/useDeleteMyAdv";
 import { useNavigate } from "react-router-dom";
 
 function MyAdv() {
-
-
     const navigate = useNavigate();
-
     const { isLoading, myadvertisements } = useGetMyAdv();
-
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedAdv, setSelectedAdv] = useState(null);
 
     const { isDeleting, deleteAdv } = useDeleteMyAdv();
 
@@ -37,75 +33,70 @@ function MyAdv() {
     }
 
     return (
-        <div className="min-h-screen p-6">
-            {/* Header */}
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">
-                آگهی‌های من
-            </h1>
+        <div className="space-y-4">
+    {myadvertisements.map((adv) => {
+        const firstImage =
+            adv?.images?.[0]?.image_path || "/images/defualt-image.jpg";
 
-            {/* Grid */}
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {myadvertisements.map((adv) => (
-                    <div
-                        key={adv.id}
-                        className="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden"
-                    >
-                        {/* Image placeholder */}
-                        <div className="h-40 bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
-                            تصویر آگهی
-                        </div>
+        return (
+            <div
+                key={adv.id}
+                className="flex bg-white rounded-2xl shadow hover:shadow-md transition overflow-hidden"
+            >
+                {/* Image */}
+                <div className="w-44 h-32 flex-shrink-0 relative overflow-hidden bg-gray-100">
+                    <img
+                        src={
+                            firstImage.startsWith("http")
+                                ? firstImage
+                                : `http://localhost:8000/${firstImage}`
+                        }
+                        className="w-full h-full object-cover"
+                        alt={adv.title}
+                        onError={(e) => {
+                            e.target.src = "/images/defualt-image.jpg";
+                        }}
+                    />
+                </div>
 
-                        {/* Content */}
-                        <div className="p-4">
-                            <h2 className="font-semibold text-lg text-gray-800 line-clamp-1">
-                                {adv.title}
-                            </h2>
+                {/* Content */}
+                <div className="flex flex-col justify-between flex-1 p-4">
+                    <div>
+                        <h2 className="font-bold text-gray-800 line-clamp-1">
+                            {adv.title}
+                        </h2>
 
-                            <p className="text-sm text-gray-600 mt-2 line-clamp-3">
-                                {adv.description}
-                            </p>
-
-                            <div className="flex justify-between items-center gap-x-2 mt-4">
-                                <button
-                                    className="btn btn--primary bg-emerald-500 w-full"
-                                    onClick={() =>
-                                        navigate("/panel/editmyadv", {
-                                            state: { adv },
-                                        })
-                                    }
-                                >
-                                    ویرایش
-                                </button>
-
-                                <button className="btn btn--danger w-full"
-                                    onClick={() => setIsDeleteOpen(true)}
-                                >
-                                    حذف آگهی
-                                </button>
-
-
-                                <AlertModal
-                                    title={`حذف ${adv.title}`}
-                                    open={isDeleteOpen}
-                                    onClose={() => setIsDeleteOpen(false)}
-                                >
-                                    <ConfirmDelete
-                                        resourceName={adv.title}
-                                        onClose={() => setIsDeleteOpen(false)}
-                                        onConfirm={() =>
-                                            deleteAdv(adv.id, {
-                                                onSuccess: () => setIsDeleteOpen(false),
-                                            })
-                                        }
-                                        disabled={false}
-                                    />
-                                </AlertModal>
-                            </div>
-                        </div>
+                        <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                            {adv.description}
+                        </p>
                     </div>
-                ))}
+
+                    <div className="flex justify-end gap-2 mt-3">
+                        <button
+                            className="btn btn--primary bg-emerald-500 px-4"
+                            onClick={() =>
+                                navigate("/panel/editmyadv", { state: { adv } })
+                            }
+                        >
+                            ویرایش
+                        </button>
+
+                        <button
+                            className="btn btn--danger px-4"
+                            onClick={() => {
+                                setSelectedAdv(adv);
+                                setIsDeleteOpen(true);
+                            }}
+                        >
+                            حذف
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
+        );
+    })}
+</div>
+
     );
 }
 

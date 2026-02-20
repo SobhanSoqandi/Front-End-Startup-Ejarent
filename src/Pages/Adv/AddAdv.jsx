@@ -1,14 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Input from "../../UI/Input";
 import RHFSelect from "../../UI/RHFSelect";
 import { useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
-import { addAdvertisementApi, editAdvertisementApi } from "../../services/advService";
+import {
+  addAdvertisementApi,
+  editAdvertisementApi,
+} from "../../services/advService";
 import useGetCategories from "../../features/Advertisement/useGetCategories";
 import { useLocation, useNavigate } from "react-router-dom";
-
-// ================== ATTRIBUTE CONFIG ==================
 
 const CATEGORY_ATTRIBUTES = {
   1: [
@@ -25,8 +26,6 @@ const CATEGORY_ATTRIBUTES = {
   ],
 };
 
-// =====================================================
-
 function AddAdv() {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -35,6 +34,8 @@ function AddAdv() {
   const isEditMode = Boolean(adv?.id);
 
   const { categories } = useGetCategories();
+
+  const [images, setImages] = useState([]);
 
   const categoryOptions =
     categories?.map((category) => ({
@@ -84,24 +85,44 @@ function AddAdv() {
     }
   }, [adv, reset]);
 
+  const handleImages = (e) => {
+    const files = Array.from(e.target.files);
+
+    if (files.length > 10) {
+      toast.error("حداکثر 10 عکس مجاز است");
+      return;
+    }
+
+    setImages(files);
+  };
+
   const onSubmit = async (data) => {
     try {
-      const payload = {
-        title: data.title,
-        description: data.description,
-        price: data.price,
-        Id_category: data.Id_category,
-        attributes: attributes.map((attr, index) => ({
-          id: attr.id,
-          value: data.attributes?.[index]?.value || "",
-        })),
-      };
+      const formData = new FormData();
 
-      const { message } = await mutateAsync(payload);
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("price", data.price);
+      formData.append("Id_category", data.Id_category);
+
+      attributes.forEach((attr, index) => {
+        formData.append(`attributes[${index}][id]`, attr.id);
+        formData.append(
+          `attributes[${index}][value]`,
+          data.attributes?.[index]?.value || ""
+        );
+      });
+
+      images.forEach((img) => {
+        formData.append("images[]", img);
+      });
+
+      const { message } = await mutateAsync(formData);
+
       toast.success(message);
       navigate("/myadv");
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "خطا در ثبت آگهی");
     }
   };
 
@@ -165,7 +186,33 @@ function AddAdv() {
           </div>
         )}
 
-        <button className="btn btn--primary mt-6" disabled={isPending}>
+        {/* upload images */}
+        <div className="w-full mt-8">
+          <label className="block mb-2 font-medium">تصاویر آگهی:</label>
+
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImages}
+            className="input"
+          />
+
+          {images.length > 0 && (
+            <div className="flex flex-wrap gap-3 mt-4">
+              {images.map((img, index) => (
+                <img
+                  key={index}
+                  src={URL.createObjectURL(img)}
+                  alt="preview"
+                  className="w-24 h-24 object-cover rounded"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        <button className="btn btn--primary mt-6 w-full" disabled={isPending}>
           {isPending
             ? "در حال ذخیره..."
             : isEditMode
